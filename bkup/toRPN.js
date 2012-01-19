@@ -23,7 +23,7 @@ function to_rpn_freq(soce){
   var sPriority = 0;
   var fPriority = 0;
   
-  console.log("to_rpn_freqIN: " + soce)
+  //console.log("to_rpn_freqIN: " + soce)
   if(soce === "NULL"){
     return("NULL");
   }
@@ -65,7 +65,7 @@ function to_rpn_freq(soce){
       stack.push(token);
     }
   }
-  console.log("to_rpn_freqOUT: " + buffer)     
+  //console.log("to_rpn_freqOUT: " + buffer)     
   return(buffer);
 }
 
@@ -114,6 +114,7 @@ function to_rpn(soce){
   right = tmp[1];
   right = to_rpn_freq(right);
   result.push(right);
+  console.log("to_rpn: " + result)
   return(result);
 }
 

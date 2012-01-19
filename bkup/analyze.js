@@ -1,21 +1,36 @@
-var WIDTH = 640;
-var HEIGHT = 480;
-var NUMBER = new RegExp("[0-9]+");
-var ALPHA = new RegExp("[a-z]");
-var VALUE = new RegExp("pi|e");
-var VALIABLE = new RegExp("^x$|^t$");
-var FUNCTION = new RegExp("sin|cos|tan|log|exp");
-var TRIANGLE = new RegExp("sin|cos|tan");
 
 function suppliment(soce){
   var left = "";
   var right = "";
+  var bar = 0;
   var result = new Array();
 
   right = soce.shift();
   while(right != "EOF"){
     left = right;
     right = soce.shift();
+    
+    if(left === "|"){
+      bar++;
+      if(bar % 2 === 0){
+        left = ")";
+      }
+      else{
+        left = "abs";
+        soce.unshift(right);
+        right = "(";
+      }
+    }
+
+    if(right === "["){
+      right = "floor";
+      soce.unshift("(");
+    }
+    if( left === "]"){
+      left = ")";
+    }
+
+
     // "*"補間
     if((left === ")" || NUMBER.test(left) || VALUE.test(left) || VALIABLE.test(left))
         && (right === "(" || NUMBER.test(right) || VALUE.test(right) 
@@ -151,7 +166,7 @@ function to_queue(soce){
     }
   }
   queue.push("EOF");
-  console.log("to_queue: " + queue)
+  //console.log("to_queue: " + queue)
   return(queue);
 }
 

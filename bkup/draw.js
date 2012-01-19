@@ -6,9 +6,7 @@ function draw_graph(coord){
   for(i = 0; i < coord[0].length; i++){
     x = coord[0][i];
     y = coord[1][i];
-    if((i > 0 && (Math.abs(y - coord[1][i - 1]) > HEIGHT))
-      || (i > 1 && coord[1][i - 2] === coord[1][i - 1] && coord[1][i - 1] != coord[1][i])
-      || (i != 0 && i < coord[0].length -2 && coord[1][i] === coord[1][i + 1] && coord[1][i - 1] != coord[1][i])){
+    if(i > 0 && (Math.abs(y - coord[1][i - 1]) > HEIGHT)){
       ctxG.moveTo(x, y);
     }
     else{

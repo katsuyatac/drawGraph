@@ -1,3 +1,4 @@
+
 function calclation_freq(fx, v){
   var stack = new Array();
   var tmp = "";
@@ -61,6 +62,14 @@ function calclation_freq(fx, v){
         left = stack.pop();
         stack.push(Math.EXP(left));
         break;
+      case "floor":
+        left = stack.pop();
+        stack.push(Math.floor(left));
+        break;
+      case "abs":
+        left = stack.pop();
+        stack.push(Math.abs(left));
+        break;
       // 変数
       case "x": case "t":
         stack.push(Number(v));
@@ -82,53 +91,98 @@ function calclation_freq(fx, v){
   return(result);
 }
 
-function get_range(soce){
-  var range = new Array();
+function get_range(soce, range){
+  var result = new Array();
   var span = 0;
-
-  if(true){//書き直す!!!
-    span = Math.PI/4;
+  var flagT = false;
+  
+  flagT = check_triangle(soce);
+  if(range != "NULL"){
+    result = calclation_freq(range, 0);
+  }
+  else{
+    if(flagT){
+      result.push(Math.PI * (-3));
+      result.push(Math.PI * 3);
+    }
+    else{
+      result.push(-10);
+      result.push(10);
+    }
+  }
+  if(flagT){
+    span = Math.PI / 3000;
   }
   else{
     span = 0.001;
   }
-  
-  if(soce != "NULL"){
-    range = calclation_freq(soce, 0);
-  }
-  else{
-    if(triangle){
-      range.push(Math.PI*(-4));
-      range.push(Math.PI*4);
-    }
-    else{
-      range.push(-50);
-      range.push(50);
-    }
-  }
-  range.push(span);
-    return(range);
+  result.push(span);
+  return(result);
 }
 
-function calclation(read){
-  var fx = new Array();
-  var range = new Array();
-  var flagValiable = false;
-  var flagTriangle = false;
-  var flagRange = false;
+function prepare(soce, xMin, xMax, span){
+  var x = 0;
+  var y = 0;
+  var flagV = false;
+  var result = new Array();
+  var xResult = new Array();
+  var yResult = new Array();
 
-  fx = read[0];
-  
-  // fxに変数三角関数があるか調べる
-  for(i = 0; i < fx.length && !flagValiable && !flagTriangle; i++){
-    if(VARIABLE.test(fx[i])){
-      flagValiable = true;
-      continue;
-    }
-    if(TRIANGLE.teat(fx[i])){
-      flagTriangle = true;
-      continue;
+  flagV = check_valiable(soce);
+  if(flagV){
+    for(x = xMin; x < xMax; x+= span){
+      x = Math.round(x*1000)/1000;
+      y = calclation_freq(soce, x);
+      if(isNaN(y)){
+        continue;
+      }
+      if(xResult.length > 0 
+        && Math.abs(x - xResult[xResult.length - 1]) > (span + span / 10)){
+        if(x > 0){
+          console.log("no push")
+          continue;
+        }
+        else{
+          xResult.pop();
+          yResult.pop();
+          console.log("delete")
+        }
+      }
+      xResult.push(x);
+      yResult.push(y);
     }
   }
-  range = get_range(read[1], flagTriangle);
+  else{
+    y = calclation(soce, 0);
+    if(!isNaN(y)){
+      xResult.push(0);
+      yResult.push(y);
+    }
+  }
+  result.push(xResult);
+  result.push(yResult);
+  return(result);
+}
+    
+
+function calclation(soce, range){
+  var xMin = 0;
+  var xMax = 0;
+  var span = 0;
+  var result = new Array();
+
+  range = get_range(soce, range);
+  xMin = range[0];
+  xMax = range[1];
+  span = range[2];
+
+  result = prepare(soce, xMin, xMax, span);
+  result.push(range);
+
+  //console.log("x: " + result[0].length)
+  //console.log("y: " + result[1].length)
+  //console.log("range: " + result[2])
+
+  return(result);
+  
 }
