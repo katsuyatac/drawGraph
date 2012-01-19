@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 traditional//EN">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="global.js"></script>
+    <script type="text/javascript" src="draw.js"></script>
+    <script type="text/javascript" src="calclation.js"></script>
+    <script type="text/javascript" src="toRPN.js"></script>
+    <script type="text/javascript" src="analyze.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <title>数式解析(補間)</title>
+	  <body>
+      <form name="form">
+      <input type="button" value="go" onclick="main()">
+      <input type="button" value="draw" onclick="main2()"></br>
+      <input type="text" style="width:1000px" name="fx" value="" onkeydown="main3(window.event.keyCode)"></br>
+      <canvas id="graph" width="800" height="640"></canvas>
+      <canvas id="function" width="640" height="30"></canvas>
+      </form>
+    </body>
+  </head>
+</html>
+
